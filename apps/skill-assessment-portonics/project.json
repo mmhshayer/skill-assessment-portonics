@@ -1,0 +1,87 @@
+{
+  "name": "skill-assessment-portonics",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/skill-assessment-portonics/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "compiler": "babel",
+        "outputPath": "dist/apps/skill-assessment-portonics",
+        "index": "apps/skill-assessment-portonics/src/index.html",
+        "baseHref": "/",
+        "main": "apps/skill-assessment-portonics/src/main.tsx",
+        "polyfills": "apps/skill-assessment-portonics/src/polyfills.ts",
+        "tsConfig": "apps/skill-assessment-portonics/tsconfig.app.json",
+        "assets": [
+          "apps/skill-assessment-portonics/src/favicon.ico",
+          "apps/skill-assessment-portonics/src/assets"
+        ],
+        "styles": ["apps/skill-assessment-portonics/src/styles.scss"],
+        "scripts": [],
+        "webpackConfig": "@nrwl/react/plugins/webpack"
+      },
+      "configurations": {
+        "development": {
+          "extractLicenses": false,
+          "optimization": false,
+          "sourceMap": true,
+          "vendorChunk": true
+        },
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "apps/skill-assessment-portonics/src/environments/environment.ts",
+              "with": "apps/skill-assessment-portonics/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/webpack:dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "skill-assessment-portonics:build",
+        "hmr": true,
+        "proxyConfig": "apps/skill-assessment-portonics/proxy.conf.json"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "skill-assessment-portonics:build:development"
+        },
+        "production": {
+          "buildTarget": "skill-assessment-portonics:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "apps/skill-assessment-portonics/**/*.{ts,tsx,js,jsx}"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/skill-assessment-portonics/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}
