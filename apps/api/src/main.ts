@@ -1,15 +1,18 @@
+import * as dotenv from 'dotenv';
 import * as express from 'express';
-import { Message } from '@skill-assessment-portonics/api-interfaces';
+import { dbConnect } from './app/db.config';
+import router from './app/routes';
+
+dotenv.config();
+dbConnect();
 
 const app = express();
+app.use(express.json());
 
-const greeting: Message = { message: 'Welcome to api!' };
-
-app.get('/api', (req, res) => {
-  res.send(greeting);
-});
+app.use('/api', router);
 
 const port = process.env.port || 3333;
+
 const server = app.listen(port, () => {
   console.log('Listening at http://localhost:' + port + '/api');
 });
