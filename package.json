@@ -10,6 +10,7 @@
   },
   "private": true,
   "dependencies": {
+    "@types/bcrypt": "^5.0.0",
     "bcrypt": "^5.1.0",
     "core-js": "^3.6.5",
     "dotenv": "^16.0.3",

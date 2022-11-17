@@ -1,13 +1,15 @@
 import { Router } from 'express';
+import { auth } from './auth.middleware';
+import { login, register } from './auth.service';
 
 const router = Router();
 
-router.get('/login', (req, res) => {
-  res.send({ type: 'GET' });
-});
+router.post('/login', login);
 
-router.post('/register', (req, res) => {
-  res.send({ type: 'POST' });
+router.post('/register', register);
+
+router.get('/', auth, (req, res) => {
+  res.send({ message: 'Hello from API!' });
 });
 
 export default router;
