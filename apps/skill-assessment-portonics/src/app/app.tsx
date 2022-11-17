@@ -1,23 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { Message } from '@skill-assessment-portonics/api-interfaces';
+import useAuth from '../features/authentication';
+import Home from './home';
+import { LoginForm } from './components';
 
 export const App = () => {
-  const [m, setMessage] = useState<Message>({ message: '' });
+  const { token } = useAuth();
 
-  useEffect(() => {
-    fetch('/api')
-      .then((r) => r.json())
-      .then(setMessage);
-  }, []);
+  if (!token) {
+    return <LoginForm />;
+  }
 
-  return (
-    <>
-      <div style={{ textAlign: 'center' }}>
-        <h1>Welcome to skill-assessment-portonics!</h1>
-      </div>
-      <div>{m.message}</div>
-    </>
-  );
+  return <Home />;
 };
 
 export default App;
