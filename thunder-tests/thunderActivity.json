@@ -1,0 +1,16 @@
+[
+  {
+    "_id": "89d6eec1-62be-4c30-80d0-86c9b8bdd9a9",
+    "colId": "history",
+    "containerId": "",
+    "name": "http://localhost:3333/api/login",
+    "url": "http://localhost:3333/api/login",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2022-11-17T03:28:41.985Z",
+    "modified": "2022-11-17T03:31:17.217Z",
+    "headers": [],
+    "params": [],
+    "tests": []
+  }
+]
