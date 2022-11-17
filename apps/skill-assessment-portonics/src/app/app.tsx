@@ -1,6 +1,8 @@
 import useAuth from '../features/authentication';
 import Home from './home';
 import { LoginForm, NavBar } from './components';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const App = () => {
   const { token } = useAuth();
@@ -9,6 +11,7 @@ export const App = () => {
     <>
       <NavBar />
       <div className="container">{token ? <Home /> : <LoginForm />}</div>
+      <ToastContainer />
     </>
   );
 };

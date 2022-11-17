@@ -1,6 +1,8 @@
 import { FC, useState } from 'react';
+import useAuth from '../../features/authentication';
+import { toast } from 'react-toastify';
 
-interface Invoice {
+interface Order {
   customer_name: string;
   customer_address: string;
   customer_email: string;
@@ -10,46 +12,56 @@ interface Invoice {
   product_description: string;
 }
 
-const initialInvoice = {
+const initialOrder: Order = {
   customer_name: '',
   customer_email: '',
   customer_phone: '',
   customer_address: '',
   ammount: 0,
-  products_name: '',
-  products_description: '',
+  product_name: '',
+  product_description: '',
 };
 
-const AddInvoiceForm: FC = () => {
-  const [addInvoiceForm, setAddInvoiceForm] = useState(false);
-  const [invoice, setInvoice] = useState(initialInvoice);
+const AddOrderForm: FC = () => {
+  const { token } = useAuth();
+  const [addOrderForm, setAddOrderForm] = useState(false);
+  const [order, setOrder] = useState(initialOrder);
 
-  const toggleAddInvoiceForm = () => {
-    setAddInvoiceForm(!addInvoiceForm);
-    console.log('addInvoiceForm', addInvoiceForm);
+  const toggleAddOrderForm = () => {
+    setAddOrderForm(!addOrderForm);
   };
 
   const handleChange = (e: any) => {
-    setInvoice({
-      ...invoice,
+    setOrder({
+      ...order,
       [e.target.name]: e.target.value,
     });
   };
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
-    console.log(invoice);
+    await fetch('/api/order', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(order),
+    }).then((res) => {
+      if (res.status === 200) {
+        toast.success('Order added successfully');
+        setOrder(initialOrder);
+        toggleAddOrderForm();
+      }
+    });
   };
 
   return (
-    <div className="add-invoice-container">
-      <button
-        className="button add-invoice-button"
-        onClick={toggleAddInvoiceForm}
-      >
-        {addInvoiceForm ? 'Cancel' : 'Create Invoice'}
+    <div className="add-order-container">
+      <button className="button add-order-button" onClick={toggleAddOrderForm}>
+        {addOrderForm ? 'Cancel' : 'Create Order'}
       </button>
-      {addInvoiceForm ? (
+      {addOrderForm ? (
         <form className="form" onSubmit={handleSubmit}>
           <label>
             Customer Name:
@@ -65,7 +77,11 @@ const AddInvoiceForm: FC = () => {
           </label>
           <label>
             Customer Address:
-            <input type="text" name="customer_adress" onChange={handleChange} />
+            <input
+              type="text"
+              name="customer_address"
+              onChange={handleChange}
+            />
           </label>
           <label>
             Ammount:
@@ -95,4 +111,4 @@ const AddInvoiceForm: FC = () => {
   );
 };
 
-export default AddInvoiceForm;
+export default AddOrderForm;

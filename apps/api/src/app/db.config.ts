@@ -1,15 +1,39 @@
-import mongoose = require('mongoose');
+import { Sequelize } from 'sequelize';
+import Order from './order.model';
+import User from './user.model';
 
 const dbConfig = {
-  uri:
-    process.env.MONGODB_URI ||
-    'mongodb://localhost:27017/skill-assessment-portonics',
+  HOST: 'localhost',
+  USER: 'admin',
+  PASSWORD: 'Passw0rd',
+  DB: 'testdb',
+  dialect: 'postgres',
+  pool: {
+    max: 5,
+    min: 0,
+    acquire: 30000,
+    idle: 10000,
+  },
 };
 
-export const dbConnect = () => {
-  mongoose.connect(dbConfig.uri);
-  const connection = mongoose.connection;
-  connection.once('open', () => {
-    console.log('MongoDB database connection established successfully!');
-  });
-};
+const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
+  host: dbConfig.HOST,
+  dialect: dbConfig.dialect as any,
+  logging: false,
+  pool: {
+    max: dbConfig.pool.max,
+    min: dbConfig.pool.min,
+    acquire: dbConfig.pool.acquire,
+    idle: dbConfig.pool.idle,
+  },
+});
+
+const db: any = {};
+
+db.Sequelize = Sequelize;
+db.sequelize = sequelize;
+
+db.users = User(sequelize, Sequelize);
+db.orders = Order(sequelize, Sequelize);
+
+export default db;

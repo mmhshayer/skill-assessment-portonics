@@ -1,13 +1,22 @@
 import * as dotenv from 'dotenv';
 import * as express from 'express';
-import { dbConnect } from './app/db.config';
 import router from './app/routes';
+import db from './app/db.config';
 
 dotenv.config();
-dbConnect();
 
 const app = express();
 app.use(express.json());
+
+db.sequelize
+  .sync()
+  .then(() => {
+    console.log('Syncing Db');
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+
 
 app.use('/api', router);
 

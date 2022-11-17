@@ -1,10 +1,10 @@
 import * as bcrypt from 'bcrypt';
-import { User } from './user.model';
 import * as jwt from 'jsonwebtoken';
+import db from './db.config';
 
 export const login = async (req, res) => {
   const { username, password } = req.body;
-  const exists = await User.findOne({ username });
+  const exists = await db.users.findOne({ where: { username } });
   if (!exists) {
     return res.status(400).json({ message: 'Invalid username or password' });
   }
@@ -32,12 +32,11 @@ export const register = async (req, res) => {
   }
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = new User({
+    const user = await db.users.create({
       username,
       password: hashedPassword,
     });
-    await user.save();
-    res.send({ username });
+    res.send({ user });
   } catch (err) {
     return res.status(400).send({ error: err.message });
   }
