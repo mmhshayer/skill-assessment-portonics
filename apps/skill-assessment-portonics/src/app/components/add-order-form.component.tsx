@@ -2,7 +2,8 @@ import { FC, useState } from 'react';
 import useAuth from '../../features/authentication';
 import { toast } from 'react-toastify';
 
-interface Order {
+export interface Order {
+  id?: number;
   customer_name: string;
   customer_address: string;
   customer_email: string;
