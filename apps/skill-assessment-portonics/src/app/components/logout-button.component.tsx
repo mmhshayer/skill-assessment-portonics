@@ -8,7 +8,11 @@ const LogOutButton: FC = () => {
     logout();
   };
 
-  return <button onClick={handleClick}>Logout</button>;
+  return (
+    <button className="button" onClick={handleClick}>
+      Logout
+    </button>
+  );
 };
 
 export default LogOutButton;

@@ -46,7 +46,12 @@ const LoginForm: FC = () => {
           onChange={(e) => setPassword(e.target.value)}
         />
       </label>
-      <input type="submit" value="Submit" disabled={!validateForm()} />
+      <input
+        type="submit"
+        value="Submit"
+        className="button"
+        disabled={!validateForm()}
+      />
     </form>
   );
 };

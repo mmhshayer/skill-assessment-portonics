@@ -1,15 +1,16 @@
 import useAuth from '../features/authentication';
 import Home from './home';
-import { LoginForm } from './components';
+import { LoginForm, NavBar } from './components';
 
 export const App = () => {
   const { token } = useAuth();
 
-  if (!token) {
-    return <LoginForm />;
-  }
-
-  return <Home />;
+  return (
+    <>
+      <NavBar />
+      <div className="container">{token ? <Home /> : <LoginForm />}</div>
+    </>
+  );
 };
 
 export default App;

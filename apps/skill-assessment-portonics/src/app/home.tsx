@@ -1,11 +1,9 @@
-import { LogOutButton } from './components';
-
 const Home = () => {
   return (
-    <>
-      <div>home</div>
-      <LogOutButton />
-    </>
+    <div>
+      <div>this sis the home page</div>
+      <div>lorem ipsum</div>
+    </div>
   );
 };
 

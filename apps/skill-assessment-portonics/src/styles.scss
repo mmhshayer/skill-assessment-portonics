@@ -1,1 +1,34 @@
 /* You can add global styles to this file, and also import other style files */
+* {
+    margin: 0;
+}
+
+.navbar {
+    padding: 1rem;
+    background: green;
+    display: flex;
+    justify-content: space-between;
+
+    .title {
+        font-size: 2rem;
+
+        a {
+            text-decoration: none;
+            color: white;
+        }
+    }
+}
+
+.button {
+    background: white;
+    color: black;
+    border: black 1px solid;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.container {
+    padding: 1rem;
+}
+    
