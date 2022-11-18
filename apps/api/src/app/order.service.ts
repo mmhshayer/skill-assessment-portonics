@@ -12,13 +12,11 @@ export const createOrder = async (req, res) => {
     product_name,
     product_description,
   } = req.body;
-  let invoice;
   const auth = authHeader();
 
   try {
     const sanitizedAmmount = parseInt(ammount);
-
-    fetch(process.env.PORTPOS_URL, {
+    const PORTPOSRES = await fetch(process.env.PORTPOS_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -50,12 +48,12 @@ export const createOrder = async (req, res) => {
           },
         },
       }),
-    }).then((res) => {
-      console.log(res);
-      return (invoice = res.json());
     });
 
-    if (invoice.status === 200) {
+    console.log('PORTPOSRES', PORTPOSRES);
+
+    if (PORTPOSRES.status === 200) {
+      const PORTPOSRESJSON = await PORTPOSRES.json();
       const order = db.orders.create({
         customer_name,
         customer_email,
@@ -65,12 +63,11 @@ export const createOrder = async (req, res) => {
         product_name,
         product_description,
         status: 'PENDING',
-        invoice_id: invoice.data.invoice_id,
+        invoice_id: PORTPOSRESJSON.data.invoice_id,
       });
       console.log(order);
-      res.status(200).json({ order });
+      return res.json({ order });
     }
-    res.status(200).json({ auth });
   } catch (err) {
     return res.status(400).send({ error: err.message });
   }
