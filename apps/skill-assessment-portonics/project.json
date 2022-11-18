@@ -53,7 +53,8 @@
       "options": {
         "buildTarget": "skill-assessment-portonics:build",
         "hmr": true,
-        "proxyConfig": "apps/skill-assessment-portonics/proxy.conf.json"
+        "proxyConfig": "apps/skill-assessment-portonics/proxy.conf.json",
+        "port": 8080
       },
       "configurations": {
         "development": {
