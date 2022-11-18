@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { auth } from './auth.middleware';
 import { login, register } from './auth.service';
+import { notify } from './ipn.service';
 import { updateOrder, createOrder, getOrders } from './order.service';
 
 const router = Router();
@@ -15,8 +16,6 @@ router.post('/order', auth, createOrder);
 
 router.patch('/order', auth, updateOrder);
 
-router.get('/', auth, (req, res) => {
-  res.send({ message: 'Hello from API!' });
-});
+router.get('/notify', notify);
 
 export default router;

@@ -1,4 +1,6 @@
 import db from './db.config';
+import fetch from 'cross-fetch';
+import { authHeader } from './portpos';
 
 export const createOrder = async (req, res) => {
   const {
@@ -10,21 +12,65 @@ export const createOrder = async (req, res) => {
     product_name,
     product_description,
   } = req.body;
+  let invoice;
+  const auth = authHeader();
+
   try {
     const sanitizedAmmount = parseInt(ammount);
-    console.log(req.body);
 
-    const order = await db.orders.create({
-      customer_name,
-      customer_email,
-      customer_phone,
-      customer_address,
-      product_name,
-      product_description,
-      ammount: sanitizedAmmount,
+    fetch(process.env.PORTPOS_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        authorization: auth,
+      },
+      body: JSON.stringify({
+        order: {
+          ammount: sanitizedAmmount,
+          currency: 'BDT',
+          redirect_url: process.env.PORTPOS_REDIRECT_URL,
+          ipn_url: process.env.PORTPOS_IPN_URL,
+        },
+        product: {
+          name: product_name,
+          description: product_description,
+        },
+        billing: {
+          customer: {
+            name: customer_name,
+            email: customer_email,
+            phone: customer_phone,
+            address: {
+              street: customer_address,
+              city: 'Dhaka',
+              state: 'Dhaka',
+              zipcode: '1200',
+              country: 'Bangladesh',
+            },
+          },
+        },
+      }),
+    }).then((res) => {
+      console.log(res);
+      return (invoice = res.json());
     });
-    console.log(order);
-    res.send({ order });
+
+    if (invoice.status === 200) {
+      const order = db.orders.create({
+        customer_name,
+        customer_email,
+        customer_phone,
+        customer_address,
+        ammount: sanitizedAmmount,
+        product_name,
+        product_description,
+        status: 'PENDING',
+        invoice_id: invoice.data.invoice_id,
+      });
+      console.log(order);
+      res.status(200).json({ order });
+    }
+    res.status(200).json({ auth });
   } catch (err) {
     return res.status(400).send({ error: err.message });
   }
@@ -33,9 +79,6 @@ export const createOrder = async (req, res) => {
 export const getOrders = async (req, res) => {
   try {
     const orders = await db.orders.findAll();
-    // if (!orders) {
-    //   return res.status(404).send({ error: 'No orders found' });
-    // }
     res.send({ orders });
   } catch (err) {
     return res.status(400).send({ error: err.message });

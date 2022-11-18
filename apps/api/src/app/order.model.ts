@@ -10,6 +10,8 @@ const Order = (sequelize, Sequelize) => {
     ammount: { type: Sequelize.INTEGER, allowNull: false },
     product_name: { type: Sequelize.STRING, allowNull: false },
     product_description: { type: Sequelize.STRING, allowNull: false },
+    status: { type: Sequelize.STRING, allowNull: false },
+    invoice_id: { type: Sequelize.STRING, allowNull: false },
   });
 
   return Order;

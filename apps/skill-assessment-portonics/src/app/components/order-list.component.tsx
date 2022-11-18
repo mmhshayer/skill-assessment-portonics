@@ -19,6 +19,10 @@ const OrderList = () => {
       .then((data) => setList(data.orders));
   }, []);
 
+  if (!list.length) {
+    return <h2>No orders found</h2>;
+  }
+
   return (
     <ul className="order-list">
       {list.map((order) => (

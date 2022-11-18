@@ -1,9 +1,10 @@
-import { AddInvoiceForm, OrderList } from './components';
+import { AddInvoiceForm, Banner, OrderList } from './components';
 
 const Home = () => {
   return (
     <>
       <AddInvoiceForm />
+      <Banner />
       <OrderList />
     </>
   );

@@ -7,7 +7,7 @@ const OrderCard = ({ order }: any) => {
     <li className="order-card" key={order.id}>
       <div className="top">
         <p>{order.customer_name}</p>
-        <p>status</p>
+        <p>{order.status}</p>
         <button
           className="button "
           onClick={() => setExpanded(!expanded)}
